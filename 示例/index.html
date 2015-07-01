@@ -29,6 +29,11 @@
                 'zrender/shape/Circle'
             ],
             function (zrender) {
+
+                var _colorPending = '#999999';     //待处理（未接收）
+                var _colorProcessing = '#FF8000';  //处理中（已接收）
+                var _colorProcessed = '#0080C0';   //已处理（已接收）
+                
                 var zr = zrender.init(document.getElementById('main'));
                 var color = require('zrender/tool/color');
                 var colorIdx = 0;
@@ -38,23 +43,40 @@
                 var guid = require('zrender/tool/guid');
                 var CircleShape = require('zrender/shape/Circle');
 
-                // 圆形
+                // 圆形：开始
                 zr.addShape(new CircleShape({
-                    id: guid(),     //元件GID
+                    id: guid(),     //标识GID
                     style: {
                         x: 100,
                         y: 100,
-                        r: 50,
+                        r: 25,
                         brushType: 'both',
-                        color: 'rgba(220, 20, 60, 0.8)',          // rgba supported
-                        strokeColor: color.getColor(colorIdx++),  // getColor from default palette
-                        lineWidth: 5,
-                        text: 'circle',
+                        color: _colorProcessed,
+                        lineWidth: 0,
+                        text: '开始',
                         textPosition: 'inside'
                     },
-                    hoverable: true,   // default true
-                    draggable: true,   // default false
-                    clickable: true   // default false
+                    hoverable: true,   // 是否可以hover
+                    draggable: true,   // 是否可拖拽
+                    clickable: true   // 是否可点击
+                }));
+
+                // 圆形：结束
+                zr.addShape(new CircleShape({
+                    id: guid(),     //标识GID
+                    style: {
+                        x: 500,
+                        y: 100,
+                        r: 25,
+                        brushType: 'both',
+                        color: _colorPending,
+                        lineWidth: 0,
+                        text: '结束',
+                        textPosition: 'inside'
+                    },
+                    hoverable: true,   // 是否可以hover
+                    draggable: true,   // 是否可拖拽
+                    clickable: true   // 是否可点击
                 }));
 
                 
