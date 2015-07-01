@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>示例</title>    
+    <!--Step:1 引入一个模块加载器，如esl.js或者require.js-->
+    <script src="api/esl.js"></script>
+</head>
+
+<body>
+
+    <!--Step:2 为ZRender准备一个具备大小（宽高）的Dom-->
+    <div id="main" style="width:100%;height:500px;border:1px solid #ccc"></div>
+
+
+    <script type="text/javascript">
+        // Step:3 为模块加载器配置zrender的路径，从当前页面链接到zrender.js
+        require.config({
+            paths:{
+                zrender: './api/zrender',
+                'zrender/shape/Circle': './api/zrender'
+            }
+        });
+
+        // Step:4 动态加载zrender然后在回调函数中开始使用
+        require(
+            [
+                'zrender',
+                'zrender/shape/Circle'
+            ],
+            function (zrender) {
+                var zr = zrender.init(document.getElementById('main'));
+                var color = require('zrender/tool/color');
+                var colorIdx = 0;
+                var width = Math.ceil(zr.getWidth());
+                var height = Math.ceil(zr.getHeight());
+                
+                var guid = require('zrender/tool/guid');
+                var CircleShape = require('zrender/shape/Circle');
+
+                // 圆形
+                zr.addShape(new CircleShape({
+                    id: guid(),     //元件GID
+                    style: {
+                        x: 100,
+                        y: 100,
+                        r: 50,
+                        brushType: 'both',
+                        color: 'rgba(220, 20, 60, 0.8)',          // rgba supported
+                        strokeColor: color.getColor(colorIdx++),  // getColor from default palette
+                        lineWidth: 5,
+                        text: 'circle',
+                        textPosition: 'inside'
+                    },
+                    hoverable: true,   // default true
+                    draggable: true,   // default false
+                    clickable: true   // default false
+                }));
+
+                
+                // 绘画
+                zr.render();
+
+
+            }
+        )
+
+
+    </script>
+
+</body>
+</html>
